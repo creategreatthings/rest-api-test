@@ -1,0 +1,17 @@
+services:
+  dotnet-pg:
+    image: postgres:latest
+    environment:
+      - POSTGRES_PASSWORD=tut1su
+    ports:
+      - 5432:5432
+    restart: always
+    volumes:
+      - ./pgdata:/docker-entrypoint-initdb.d/
+  rest-api-test:
+    image: rest-api-test:dev
+    environment:
+      - DOTNET_URLS=http://*:5000
+      - ConnectionStrings__DBCONN=Host=dotnet-pg;Port=5432;Database=tut1;Username=tut1;Password=tut1;
+    ports:
+      - 5000:5000
